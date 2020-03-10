@@ -136,7 +136,7 @@ void SceneApp::Render()
 	renderer_3d_->set_projection_matrix(projection_matrix);
 
 	// view
-	gef::Vector4 camera_eye(-2.0f, 2.0f, 10.0f);
+	gef::Vector4 camera_eye(0.0f, 15.0f, 20.0f);
 	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
 	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
 	gef::Matrix44 view_matrix;
@@ -199,7 +199,7 @@ void SceneApp::InitPlayer()
 void SceneApp::InitGround()
 {
 	// ground dimensions
-	gef::Vector4 ground_half_dimensions(5.0f, 0.5f, 0.5f);
+	gef::Vector4 ground_half_dimensions(10.0f, 0.5f, 10.0f);
 
 	// setup the mesh for the ground
 	ground_mesh_ = primitive_builder_->CreateBoxMesh(ground_half_dimensions);
