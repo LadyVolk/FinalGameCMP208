@@ -9,7 +9,8 @@
 #include <iostream>
 #include "system/debug_log.h"
 #include "input/keyboard.h"
-
+#include "box2d/b2_math.h"
+#include "box2d/b2_shape.h"
 
 
 using namespace std;
@@ -33,7 +34,7 @@ void SceneApp::Init()
 	gef::DebugOut("\n");
 
 	//setting arena variables
-	arena_dimensions_.set_value(20.f, 1.f, 20.0f);
+	arena_dimensions_.set_value(20.f, 1.f, 5.0f);
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
@@ -146,7 +147,7 @@ void SceneApp::Render()
 	renderer_3d_->set_projection_matrix(projection_matrix);
 
 	// view
-	gef::Vector4 camera_eye(0.0f, 15.0f, 20.0f);
+	gef::Vector4 camera_eye(0.0f, 3.0f, 20.0f);
 	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
 	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
 	gef::Matrix44 view_matrix;
@@ -204,6 +205,9 @@ void SceneApp::InitPlayer()
 	player_body_->SetUserData(&player_);
 
 	player_.SetType(GameObject::player);
+
+	//speed
+	player_.SetSpeed(20);
 }
 
 void SceneApp::InitGround()
@@ -315,9 +319,21 @@ void SceneApp::HandleInput(float timeStep) {
 
 	gef::Keyboard* keyboard = input_->keyboard();
 
+	
+
 	if (keyboard) {
-		if (keyboard->IsKeyDown(keyboard->KC_TAB)) {
+		if (keyboard->IsKeyDown(keyboard->KC_W)) {
 			
 		}
+		if (keyboard->IsKeyDown(keyboard->KC_S)) {
+
+		}
+		if (keyboard->IsKeyDown(keyboard->KC_A)) {
+			player_body_->ApplyForceToCenter(b2Vec2(-player_.GetSpeed(), 0.0), true);
+		}
+		if (keyboard->IsKeyDown(keyboard->KC_D)) {
+			player_body_->ApplyForceToCenter(b2Vec2(player_.GetSpeed(), 0.0), true);
+		}
 	}
+
 }

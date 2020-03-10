@@ -31,3 +31,11 @@ void GameObject::SetType(ObjectType type) {
 GameObject::ObjectType GameObject::GetType() {
 	return type_member;
 }
+
+void GameObject::SetSpeed(float speed_) {
+	speed = speed_;
+}
+
+float GameObject::GetSpeed() {
+	return speed;
+}

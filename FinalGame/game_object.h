@@ -12,11 +12,16 @@ class GameObject : public gef::MeshInstance
 	
 	
 public:
+	
+	float speed;
+
 	enum ObjectType { player, enemy };
 	ObjectType type_member;
 	void UpdateFromSimulation(const b2Body* body);
 	ObjectType GetType();
 	void SetType(ObjectType type);
+	void SetSpeed(float speed);
+	float GetSpeed();
 };
 
 #endif // _GAME_OBJECT_H
