@@ -34,7 +34,8 @@ void SceneApp::Init()
 	gef::DebugOut("\n");
 
 	//setting arena variables
-	arena_dimensions_.set_value(20.f, 1.f, 5.0f);
+	arena_dimensions_.set_value(30.f, 1.f, 5.0f);
+	wall_dimensions_.set_value(1.0f, 15.0f, 10.0f);
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
@@ -52,8 +53,8 @@ void SceneApp::Init()
 	world_ = new b2World(gravity);
 
 	InitPlayer();
-	//InitEnemy();
 	InitGround();
+	InitWalls();
 
 	//create input object
 	input_ = gef::InputManager::Create(platform_);
@@ -147,8 +148,8 @@ void SceneApp::Render()
 	renderer_3d_->set_projection_matrix(projection_matrix);
 
 	// view
-	gef::Vector4 camera_eye(0.0f, 3.0f, 20.0f);
-	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
+	gef::Vector4 camera_eye(0.0f, 8.0f, 30.0f);
+	gef::Vector4 camera_lookat(0.0f, 8.0f, 0.0f);
 	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
 	gef::Matrix44 view_matrix;
 	view_matrix.LookAt(camera_eye, camera_lookat, camera_up);
@@ -160,6 +161,10 @@ void SceneApp::Render()
 
 	// draw ground
 	renderer_3d_->DrawMesh(ground_);
+
+	//draw walls
+	renderer_3d_->DrawMesh(wall_1_);
+	renderer_3d_->DrawMesh(wall_2_);
 
 	// draw player
 	renderer_3d_->set_override_material(&primitive_builder_->red_material());
@@ -242,40 +247,44 @@ void SceneApp::InitGround()
 
 }
 
-void SceneApp::InitEnemy() {
+void SceneApp::InitWalls() 
+	{
+		// ground dimensions
+		gef::Vector4 wall_half_dimensions(wall_dimensions_.x() / 2, wall_dimensions_.y() / 2, wall_dimensions_.z() / 2);
 
-	// setup the mesh for the player
-	enemy_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+		// setup the mesh for the ground
+		wall_mesh_ = primitive_builder_->CreateBoxMesh(wall_half_dimensions);
+		wall_1_.set_mesh(wall_mesh_);
+		wall_2_.set_mesh(wall_mesh_);
 
-	// create a physics body for the player
-	b2BodyDef enemy_body_def;
-	enemy_body_def.type = b2_dynamicBody;
-	enemy_body_def.position = b2Vec2(0.0f, 6.0f);
+		// create a physics body
+		b2BodyDef body_def_1;
+		b2BodyDef body_def_2;
+		body_def_1.type = b2_staticBody;
+		body_def_1.position = b2Vec2(-arena_dimensions_.x()/2 - wall_dimensions_.x()/2, wall_dimensions_.y()/ 2 - arena_dimensions_.y()/2);
+		body_def_2.type = b2_staticBody;
+		body_def_2.position = b2Vec2(arena_dimensions_.x() / 2 + wall_dimensions_.x() / 2, wall_dimensions_.y() / 2 - arena_dimensions_.y() / 2);
 
-	enemy_body_ = world_->CreateBody(&enemy_body_def);
+		wall_body_1_ = world_->CreateBody(&body_def_1);
+		wall_body_2_ = world_->CreateBody(&body_def_2);
 
-	// create the shape for the enemy
-	b2PolygonShape enemy_shape;
-	enemy_shape.SetAsBox(0.5f, 0.5f);
+		// create the shape
+		b2PolygonShape shape;
+		shape.SetAsBox(wall_half_dimensions.x(), wall_half_dimensions.y());
 
-	// create the fixture
-	b2FixtureDef enemy_fixture_def;
-	enemy_fixture_def.shape = &enemy_shape;
-	enemy_fixture_def.density = 1.0f;
+		// create the fixture
+		b2FixtureDef fixture_def;
+		fixture_def.shape = &shape;
 
-	// create the fixture on the rigid body
-	enemy_body_->CreateFixture(&enemy_fixture_def);
+		// create the fixture on the rigid body
+		wall_body_1_->CreateFixture(&fixture_def);
+		wall_body_2_->CreateFixture(&fixture_def);
 
-	// update visuals from simulation data
-	enemy_.UpdateFromSimulation(enemy_body_);
-
-	//set enemy type
-	enemy_.SetType(GameObject::enemy);
-
-	//set enemy data
-	enemy_body_->SetUserData(&enemy_);
-	
+		// update visuals from simulation data
+		wall_1_.UpdateFromSimulation(wall_body_1_);
+		wall_2_.UpdateFromSimulation(wall_body_2_);
 }
+
 
 void SceneApp::InitFont()
 {
@@ -318,8 +327,6 @@ void SceneApp::HandleInput(float timeStep) {
 	input_->Update();
 
 	gef::Keyboard* keyboard = input_->keyboard();
-
-	
 
 	if (keyboard) {
 		if (keyboard->IsKeyDown(keyboard->KC_W)) {

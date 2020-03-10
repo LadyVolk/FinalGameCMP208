@@ -31,11 +31,11 @@ public:
 private:
 	void InitPlayer();
 	void InitGround();
+	void InitWalls();
 	void InitFont();
 	void CleanUpFont();
 	void DrawHUD();
 	void SetupLights();
-	void InitEnemy();
 	void HandleInput(float timeStep);
     
 	gef::SpriteRenderer* sprite_renderer_;
@@ -58,6 +58,16 @@ private:
 	GameObject ground_;
 	b2Body* ground_body_;
 	gef::Vector4 arena_dimensions_;
+
+	//wall variables
+	gef::Vector4 wall_dimensions_;
+
+	gef::Mesh* wall_mesh_;
+	GameObject wall_1_;
+	b2Body* wall_body_1_;
+
+	GameObject wall_2_;
+	b2Body* wall_body_2_;
 
 	//input
 	gef::InputManager* input_;
