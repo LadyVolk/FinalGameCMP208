@@ -54,6 +54,7 @@ private:
 	gef::Mesh* ground_mesh_;
 	GameObject ground_;
 	b2Body* ground_body_;
+	gef::Vector4 arena_dimensions_;
 
 	float fps_;
 };

@@ -26,6 +26,8 @@ SceneApp::SceneApp(gef::Platform& platform) :
 
 void SceneApp::Init()
 {
+	arena_dimensions_.set_value(20.f, 1.f, 20.0f);
+
 	gef::DebugOut("\n");
 	gef::DebugOut("------------START NOW ------------");
 	gef::DebugOut("\n");
@@ -199,7 +201,7 @@ void SceneApp::InitPlayer()
 void SceneApp::InitGround()
 {
 	// ground dimensions
-	gef::Vector4 ground_half_dimensions(10.0f, 0.5f, 10.0f);
+	gef::Vector4 ground_half_dimensions(arena_dimensions_.x()/2, arena_dimensions_.y()/2, arena_dimensions_.z()/2);
 
 	// setup the mesh for the ground
 	ground_mesh_ = primitive_builder_->CreateBoxMesh(ground_half_dimensions);
