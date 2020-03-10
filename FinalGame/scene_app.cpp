@@ -8,6 +8,8 @@
 #include <maths/math_utils.h>
 #include <iostream>
 #include "system/debug_log.h"
+#include "input/keyboard.h"
+
 
 
 using namespace std;
@@ -26,11 +28,12 @@ SceneApp::SceneApp(gef::Platform& platform) :
 
 void SceneApp::Init()
 {
-	arena_dimensions_.set_value(20.f, 1.f, 20.0f);
+	gef::DebugOut("\n");
+	gef::DebugOut("------------ START NOW INIT ------------");
+	gef::DebugOut("\n");
 
-	gef::DebugOut("\n");
-	gef::DebugOut("------------START NOW ------------");
-	gef::DebugOut("\n");
+	//setting arena variables
+	arena_dimensions_.set_value(20.f, 1.f, 20.0f);
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
@@ -51,6 +54,8 @@ void SceneApp::Init()
 	//InitEnemy();
 	InitGround();
 
+	//create input object
+	input_ = gef::InputManager::Create(platform_);
 }
 
 void SceneApp::CleanUp()
@@ -85,6 +90,9 @@ bool SceneApp::Update(float frame_time)
 	int32 positionIterations = 2;
 
 	world_->Step(timeStep, velocityIterations, positionIterations);
+
+	//handle input
+	HandleInput(timeStep);
 
 	// update object visuals from simulation data
 	player_.UpdateFromSimulation(player_body_);
@@ -300,4 +308,16 @@ void SceneApp::SetupLights()
 	default_point_light.set_colour(gef::Colour(0.7f, 0.7f, 1.0f, 1.0f));
 	default_point_light.set_position(gef::Vector4(-500.0f, 400.0f, 700.0f));
 	default_shader_data.AddPointLight(default_point_light);
+}
+
+void SceneApp::HandleInput(float timeStep) {
+	input_->Update();
+
+	gef::Keyboard* keyboard = input_->keyboard();
+
+	if (keyboard) {
+		if (keyboard->IsKeyDown(keyboard->KC_TAB)) {
+			
+		}
+	}
 }

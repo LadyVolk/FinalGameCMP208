@@ -7,6 +7,8 @@
 #include <graphics/mesh_instance.h>
 #include <box2d/Box2D.h>
 #include "game_object.h"
+#include <input/input_manager.h>
+
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -34,6 +36,7 @@ private:
 	void DrawHUD();
 	void SetupLights();
 	void InitEnemy();
+	void HandleInput(float timeStep);
     
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
@@ -55,6 +58,9 @@ private:
 	GameObject ground_;
 	b2Body* ground_body_;
 	gef::Vector4 arena_dimensions_;
+
+	//input
+	gef::InputManager* input_;
 
 	float fps_;
 };
