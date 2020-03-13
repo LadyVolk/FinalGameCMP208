@@ -46,6 +46,10 @@ private:
 
 	PrimitiveBuilder* primitive_builder_;
 
+	//difficulty
+	enum Difficulty {easy, medium, hard};
+	Difficulty difficulty_ = hard;
+
 	// create the physics world
 	b2World* world_;
 
@@ -54,6 +58,7 @@ private:
 	b2Body* player_body_;
 
 	//enemy variables
+	gef::Vector4 enemy_dimensions_;
 	vector <GameObject> enemies_;
 	vector <b2Body*> enemy_bodies_;
 

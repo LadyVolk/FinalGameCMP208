@@ -37,6 +37,7 @@ void SceneApp::Init()
 	//setting arena variables
 	arena_dimensions_.set_value(30.f, 1.f, 5.0f);
 	wall_dimensions_.set_value(1.0f, 15.0f, 10.0f);
+	enemy_dimensions_.set_value(0.5f, 0.5f, 0.5f);
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
@@ -57,11 +58,23 @@ void SceneApp::Init()
 	srand(time(NULL));
 	rand();
 
+
+
 	InitPlayer();
-	CreateEnemy(4);
-	CreateEnemy(-4);
 	InitGround();
 	InitWalls();
+
+	switch (difficulty_) {
+		case hard:
+			CreateEnemy(6);
+			CreateEnemy(-6);
+		case medium:
+			CreateEnemy(4);
+			CreateEnemy(-4);
+		case easy:
+			CreateEnemy(2);
+			CreateEnemy(-2);
+	}
 
 	//create input object
 	input_ = gef::InputManager::Create(platform_);
@@ -241,8 +254,11 @@ void SceneApp::CreateEnemy(float x) {
 
 	b2Body* enemy_body_;
 
+	// ground dimensions
+	gef::Vector4 enemy_half_dimensions( enemy_dimensions_.x() / 2, enemy_dimensions_.y() / 2, enemy_dimensions_.z() / 2);
+
 	// setup the mesh for the enemy
-	enemy_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+	enemy_.set_mesh(primitive_builder_->CreateBoxMesh(enemy_half_dimensions));
 
 	// create a physics body for the enemy
 	b2BodyDef enemy_body_def;
@@ -257,7 +273,7 @@ void SceneApp::CreateEnemy(float x) {
 
 	// create the shape for the enemy
 	b2PolygonShape enemy_shape;
-	enemy_shape.SetAsBox(0.5f, 0.5f);
+	enemy_shape.SetAsBox(enemy_half_dimensions.x(), enemy_half_dimensions.y());
 
 	// create the fixture
 	b2FixtureDef enemy_fixture_def;
@@ -281,8 +297,8 @@ void SceneApp::CreateEnemy(float x) {
 	enemy_.SetSpeed(20);
 
 	//apply force for direction
-	float max_force = 800;
-	float min_force = 400;
+	float max_force = 200;
+	float min_force = 100;
 	float random_force = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 	float force = (random_force * 2 * max_force) - max_force;
 	if (force < min_force && force >= 0) {
@@ -368,7 +384,6 @@ void SceneApp::InitWalls()
 		wall_1_.UpdateFromSimulation(wall_body_1_);
 		wall_2_.UpdateFromSimulation(wall_body_2_);
 }
-
 
 void SceneApp::InitFont()
 {
