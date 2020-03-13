@@ -217,6 +217,7 @@ void SceneApp::InitPlayer()
 	b2FixtureDef player_fixture_def;
 	player_fixture_def.shape = &player_shape;
 	player_fixture_def.density = 1.0f;
+	player_fixture_def.friction = 3.0f;
 
 	// create the fixture on the rigid body
 	player_body_->CreateFixture(&player_fixture_def);
@@ -230,7 +231,7 @@ void SceneApp::InitPlayer()
 	player_.SetType(GameObject::player);
 
 	//speed
-	player_.SetSpeed(20);
+	player_.SetSpeed(30);
 
 }
 
@@ -250,7 +251,7 @@ void SceneApp::CreateEnemy(float x) {
 	enemy_body_def.fixedRotation = true;
 	enemy_body_def.linearDamping = 0.0f;
 	enemy_body_def.angularDamping = 0.0f;
-	enemy_body_def.gravityScale = 2.0f;
+	enemy_body_def.gravityScale = 1.5f;
 
 	enemy_body_ = world_->CreateBody(&enemy_body_def);
 
