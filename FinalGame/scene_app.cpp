@@ -11,7 +11,9 @@
 #include "input/keyboard.h"
 #include "box2d/b2_math.h"
 #include "box2d/b2_shape.h"
-
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -51,8 +53,13 @@ void SceneApp::Init()
 	b2Vec2 gravity(0.0f, -9.81f);
 	world_ = new b2World(gravity);
 
+	//rand
+	srand(time(NULL));
+	rand();
+
 	InitPlayer();
-	CreateEnemy();
+	CreateEnemy(4);
+	CreateEnemy(-4);
 	InitGround();
 	InitWalls();
 
@@ -197,6 +204,8 @@ void SceneApp::InitPlayer()
 	b2BodyDef player_body_def;
 	player_body_def.type = b2_dynamicBody;
 	player_body_def.position = b2Vec2(0.0f, 4.0f);
+	//fixed rotation
+	player_body_def.fixedRotation = true;
 
 	player_body_ = world_->CreateBody(&player_body_def);
 
@@ -222,9 +231,10 @@ void SceneApp::InitPlayer()
 
 	//speed
 	player_.SetSpeed(20);
+
 }
 
-void SceneApp::CreateEnemy() {
+void SceneApp::CreateEnemy(float x) {
 
 	GameObject enemy_;
 
@@ -236,7 +246,11 @@ void SceneApp::CreateEnemy() {
 	// create a physics body for the enemy
 	b2BodyDef enemy_body_def;
 	enemy_body_def.type = b2_dynamicBody;
-	enemy_body_def.position = b2Vec2(2.0f, 4.0f);
+	enemy_body_def.position = b2Vec2(x, 12.0f);
+	enemy_body_def.fixedRotation = true;
+	enemy_body_def.linearDamping = 0.0f;
+	enemy_body_def.angularDamping = 0.0f;
+	enemy_body_def.gravityScale = 2.0f;
 
 	enemy_body_ = world_->CreateBody(&enemy_body_def);
 
@@ -248,6 +262,8 @@ void SceneApp::CreateEnemy() {
 	b2FixtureDef enemy_fixture_def;
 	enemy_fixture_def.shape = &enemy_shape;
 	enemy_fixture_def.density = 1.0f;
+	enemy_fixture_def.restitution = 1.0f;
+	enemy_fixture_def.friction = 0.0f;
 
 	// create the fixture on the rigid body
 	enemy_body_->CreateFixture(&enemy_fixture_def);
@@ -263,9 +279,23 @@ void SceneApp::CreateEnemy() {
 	//speed
 	enemy_.SetSpeed(20);
 
+	//apply force for direction
+	float max_force = 800;
+	float min_force = 400;
+	float random_force = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	float force = (random_force * 2 * max_force) - max_force;
+	if (force < min_force && force >= 0) {
+		force = min_force;
+	}
+	else if (force > -min_force && force < 0) {
+		force = -min_force;
+	}
+	enemy_body_->ApplyForceToCenter(b2Vec2(force, 0.0), true);
+
 	//put enemy on vector
 	enemies_.push_back(enemy_);
 	enemy_bodies_.push_back(enemy_body_);
+
 }
 
 void SceneApp::InitGround()

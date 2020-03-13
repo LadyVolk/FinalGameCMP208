@@ -31,7 +31,7 @@ public:
 	void Render();
 private:
 	void InitPlayer();
-	void CreateEnemy();
+	void CreateEnemy(float x);
 	void InitGround();
 	void InitWalls();
 	void InitFont();
