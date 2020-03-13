@@ -8,6 +8,7 @@
 #include <box2d/Box2D.h>
 #include "game_object.h"
 #include <input/input_manager.h>
+#include <vector>
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -30,6 +31,7 @@ public:
 	void Render();
 private:
 	void InitPlayer();
+	void CreateEnemy();
 	void InitGround();
 	void InitWalls();
 	void InitFont();
@@ -49,9 +51,11 @@ private:
 
 	// player variables
 	GameObject player_;
-	GameObject enemy_;
 	b2Body* player_body_;
-	b2Body* enemy_body_;
+
+	//enemy variables
+	vector <GameObject> enemies_;
+	vector <b2Body*> enemy_bodies_;
 
 	// ground variables
 	gef::Mesh* ground_mesh_;

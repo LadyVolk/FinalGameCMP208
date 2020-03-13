@@ -22,8 +22,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	primitive_builder_(NULL),
 	font_(NULL),
 	world_(NULL),
-	player_body_(NULL),
-	enemy_body_(NULL)
+	player_body_(NULL)
 {
 }
 
@@ -53,6 +52,7 @@ void SceneApp::Init()
 	world_ = new b2World(gravity);
 
 	InitPlayer();
+	CreateEnemy();
 	InitGround();
 	InitWalls();
 
@@ -83,6 +83,8 @@ void SceneApp::CleanUp()
 
 bool SceneApp::Update(float frame_time)
 {
+	int i;
+
 	fps_ = 1.0f / frame_time;
 
 	// update physics world
@@ -98,7 +100,9 @@ bool SceneApp::Update(float frame_time)
 
 	// update object visuals from simulation data
 	player_.UpdateFromSimulation(player_body_);
-	//enemy_.UpdateFromSimulation(enemy_body_);
+	for (i = 0; i < enemies_.size(); i++) {
+		enemies_[i].UpdateFromSimulation(enemy_bodies_[i]);
+	}
 
 	// don't have to update the ground visuals as it is static
 
@@ -133,11 +137,9 @@ bool SceneApp::Update(float frame_time)
 	return true;
 }
 
-
-
-
 void SceneApp::Render()
 {
+	int i;
 	// setup camera
 
 	// projection
@@ -167,8 +169,15 @@ void SceneApp::Render()
 	renderer_3d_->DrawMesh(wall_2_);
 
 	// draw player
-	renderer_3d_->set_override_material(&primitive_builder_->red_material());
+	renderer_3d_->set_override_material(&primitive_builder_->blue_material());
 	renderer_3d_->DrawMesh(player_);
+	renderer_3d_->set_override_material(NULL);
+
+	//draw enemies
+	renderer_3d_->set_override_material(&primitive_builder_->red_material());
+	for (i = 0; i < enemies_.size(); i++) {
+		renderer_3d_->DrawMesh(enemies_[i]);
+	}
 	renderer_3d_->set_override_material(NULL);
 
 	renderer_3d_->End();
@@ -213,6 +222,50 @@ void SceneApp::InitPlayer()
 
 	//speed
 	player_.SetSpeed(20);
+}
+
+void SceneApp::CreateEnemy() {
+
+	GameObject enemy_;
+
+	b2Body* enemy_body_;
+
+	// setup the mesh for the enemy
+	enemy_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+
+	// create a physics body for the enemy
+	b2BodyDef enemy_body_def;
+	enemy_body_def.type = b2_dynamicBody;
+	enemy_body_def.position = b2Vec2(2.0f, 4.0f);
+
+	enemy_body_ = world_->CreateBody(&enemy_body_def);
+
+	// create the shape for the enemy
+	b2PolygonShape enemy_shape;
+	enemy_shape.SetAsBox(0.5f, 0.5f);
+
+	// create the fixture
+	b2FixtureDef enemy_fixture_def;
+	enemy_fixture_def.shape = &enemy_shape;
+	enemy_fixture_def.density = 1.0f;
+
+	// create the fixture on the rigid body
+	enemy_body_->CreateFixture(&enemy_fixture_def);
+
+	// update visuals from simulation data
+	enemy_.UpdateFromSimulation(enemy_body_);
+
+	//set user data
+	enemy_body_->SetUserData(&enemy_);
+
+	enemy_.SetType(GameObject::enemy);
+
+	//speed
+	enemy_.SetSpeed(20);
+
+	//put enemy on vector
+	enemies_.push_back(enemy_);
+	enemy_bodies_.push_back(enemy_body_);
 }
 
 void SceneApp::InitGround()
