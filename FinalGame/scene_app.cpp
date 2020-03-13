@@ -261,9 +261,15 @@ void SceneApp::CreateEnemy(float x) {
 	enemy_.set_mesh(primitive_builder_->CreateBoxMesh(enemy_half_dimensions));
 
 	// create a physics body for the enemy
+	float max_pos = 12;
+	float min_pos = 8;
+	float y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	y = y * (max_pos - min_pos);
+	y += min_pos;
+
 	b2BodyDef enemy_body_def;
 	enemy_body_def.type = b2_dynamicBody;
-	enemy_body_def.position = b2Vec2(x, 12.0f);
+	enemy_body_def.position = b2Vec2(x, y);
 	enemy_body_def.fixedRotation = true;
 	enemy_body_def.linearDamping = 0.0f;
 	enemy_body_def.angularDamping = 0.0f;
