@@ -57,6 +57,7 @@ private:
 	// player variables
 	GameObject player_;
 	b2Body* player_body_;
+	bool player_is_dead;
 
 	//enemy variables
 	gef::Vector4 enemy_dimensions_;

@@ -30,6 +30,8 @@ public:
 	void SetHealth(int health_);
 	int GetHealth();
 
+	void DealDamage();
+
 	
 };
 

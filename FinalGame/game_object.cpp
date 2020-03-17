@@ -47,3 +47,7 @@ void GameObject::SetHealth(int health_) {
 int GameObject::GetHealth() {
 	return health;
 }
+
+void GameObject::DealDamage() {
+	health -= 1;
+}

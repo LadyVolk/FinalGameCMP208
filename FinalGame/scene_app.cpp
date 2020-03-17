@@ -61,6 +61,7 @@ void SceneApp::Init()
 
 
 	InitPlayer();
+	player_is_dead = false;
 	InitGround();
 	InitWalls();
 	
@@ -119,7 +120,10 @@ bool SceneApp::Update(float frame_time)
 	HandleInput(timeStep);
 
 	// update object visuals from simulation data
-	player_.UpdateFromSimulation(player_body_);
+	if (!player_is_dead) {
+		player_.UpdateFromSimulation(player_body_);
+	}
+	
 	for (i = 0; i < enemies_.size(); i++) {
 		enemies_[i]->UpdateFromSimulation(enemy_bodies_[i]);
 	}
@@ -133,6 +137,7 @@ bool SceneApp::Update(float frame_time)
 	// get contact count
 	int contact_count = world_->GetContactCount();
 	
+	bool destroy_player = false;
 	for (int contact_num = 0; contact_num<contact_count; ++contact_num)
 	{
 		if (contact->IsTouching())
@@ -140,18 +145,40 @@ bool SceneApp::Update(float frame_time)
 			// get the colliding bodies
 			b2Body* bodyA = contact->GetFixtureA()->GetBody();
 			b2Body* bodyB = contact->GetFixtureB()->GetBody();
+			GameObject* dataA = ((GameObject*)bodyA->GetUserData());
+			GameObject* dataB = ((GameObject*)bodyB->GetUserData());
 			
 			// DO COLLISION RESPONSE HERE
 			if (bodyA->GetUserData() != nullptr && bodyB->GetUserData() != nullptr) {
-				GameObject::ObjectType type_a = ((GameObject*)bodyA->GetUserData())->GetObjectType();
-				GameObject::ObjectType type_b = ((GameObject*)bodyB->GetUserData())->GetObjectType();
+				GameObject::ObjectType type_a = dataA->GetObjectType();
+				GameObject::ObjectType type_b = dataB->GetObjectType();
 				
-			
+				if ((type_a == GameObject::player && type_b == GameObject::enemy) ||
+					(type_a == GameObject::enemy && type_b == GameObject::player)) {
+					if (type_a == GameObject::player) {
+						dataA->DealDamage();
+						if (dataA->GetHealth() <= 0) {
+							destroy_player = true;
+						}
+					}
+					else {
+						dataB->DealDamage();
+						if (dataB->GetHealth() <= 0) {
+							destroy_player = true;
+						}
+					}
+					
+				}
+				
 			}
 		}
 
 		// Get next contact point
 		contact = contact->GetNext();
+	}
+	if (destroy_player) {
+		player_is_dead = true;
+		world_->DestroyBody(player_body_);
 	}
 
 
@@ -190,9 +217,12 @@ void SceneApp::Render()
 	renderer_3d_->DrawMesh(wall_2_);
 
 	// draw player
-	renderer_3d_->set_override_material(&primitive_builder_->blue_material());
-	renderer_3d_->DrawMesh(player_);
-	renderer_3d_->set_override_material(NULL);
+	if (!player_is_dead) {
+		renderer_3d_->set_override_material(&primitive_builder_->blue_material());
+		renderer_3d_->DrawMesh(player_);
+		renderer_3d_->set_override_material(NULL);
+	}
+	
 
 	//draw enemies
 	renderer_3d_->set_override_material(&primitive_builder_->red_material());
