@@ -25,10 +25,10 @@ void GameObject::UpdateFromSimulation(const b2Body* body)
 	}
 }
 
-void GameObject::SetType(ObjectType type) {
+void GameObject::SetObjectType(ObjectType type) {
 	type_member = type;
 }
-GameObject::ObjectType GameObject::GetType() {
+GameObject::ObjectType GameObject::GetObjectType() {
 	return type_member;
 }
 
@@ -38,4 +38,12 @@ void GameObject::SetSpeed(float speed_) {
 
 float GameObject::GetSpeed() {
 	return speed;
+}
+
+void GameObject::SetHealth(int health_) {
+	health = health_;
+}
+
+int GameObject::GetHealth() {
+	return health;
 }

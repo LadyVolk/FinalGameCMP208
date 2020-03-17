@@ -63,7 +63,7 @@ void SceneApp::Init()
 	InitPlayer();
 	InitGround();
 	InitWalls();
-
+	
 	switch (difficulty_) {
 		case hard:
 			CreateEnemy(6);
@@ -75,7 +75,7 @@ void SceneApp::Init()
 			CreateEnemy(2);
 			CreateEnemy(-2);
 	}
-
+	
 	//create input object
 	input_ = gef::InputManager::Create(platform_);
 }
@@ -121,7 +121,7 @@ bool SceneApp::Update(float frame_time)
 	// update object visuals from simulation data
 	player_.UpdateFromSimulation(player_body_);
 	for (i = 0; i < enemies_.size(); i++) {
-		enemies_[i].UpdateFromSimulation(enemy_bodies_[i]);
+		enemies_[i]->UpdateFromSimulation(enemy_bodies_[i]);
 	}
 
 	// don't have to update the ground visuals as it is static
@@ -142,10 +142,11 @@ bool SceneApp::Update(float frame_time)
 			b2Body* bodyB = contact->GetFixtureB()->GetBody();
 			
 			// DO COLLISION RESPONSE HERE
-			if (bodyA->GetUserData() && bodyB->GetUserData()) {
-				GameObject::ObjectType type_a = ((GameObject*)bodyA->GetUserData())->GetType();
-				GameObject::ObjectType type_b = ((GameObject*)bodyB->GetUserData())->GetType();
+			if (bodyA->GetUserData() != nullptr && bodyB->GetUserData() != nullptr) {
+				GameObject::ObjectType type_a = ((GameObject*)bodyA->GetUserData())->GetObjectType();
+				GameObject::ObjectType type_b = ((GameObject*)bodyB->GetUserData())->GetObjectType();
 				
+			
 			}
 		}
 
@@ -196,7 +197,7 @@ void SceneApp::Render()
 	//draw enemies
 	renderer_3d_->set_override_material(&primitive_builder_->red_material());
 	for (i = 0; i < enemies_.size(); i++) {
-		renderer_3d_->DrawMesh(enemies_[i]);
+		renderer_3d_->DrawMesh(*enemies_[i]);
 	}
 	renderer_3d_->set_override_material(NULL);
 
@@ -241,24 +242,27 @@ void SceneApp::InitPlayer()
 	//set user data
 	player_body_->SetUserData(&player_);
 
-	player_.SetType(GameObject::player);
+	player_.SetObjectType(GameObject::player);
 
 	//speed
 	player_.SetSpeed(30);
+
+	//set health
+	player_.SetHealth(3);
 
 }
 
 void SceneApp::CreateEnemy(float x) {
 
-	GameObject enemy_;
+	GameObject* enemy_ = new GameObject();
 
-	b2Body* enemy_body_;
+	b2Body* enemy_body_ (NULL);
 
 	// ground dimensions
 	gef::Vector4 enemy_half_dimensions( enemy_dimensions_.x() / 2, enemy_dimensions_.y() / 2, enemy_dimensions_.z() / 2);
 
 	// setup the mesh for the enemy
-	enemy_.set_mesh(primitive_builder_->CreateBoxMesh(enemy_half_dimensions));
+	enemy_->set_mesh(primitive_builder_->CreateBoxMesh(enemy_half_dimensions));
 
 	// create a physics body for the enemy
 	float max_pos = 12;
@@ -292,15 +296,17 @@ void SceneApp::CreateEnemy(float x) {
 	enemy_body_->CreateFixture(&enemy_fixture_def);
 
 	// update visuals from simulation data
-	enemy_.UpdateFromSimulation(enemy_body_);
+	enemy_->UpdateFromSimulation(enemy_body_);
 
 	//set user data
-	enemy_body_->SetUserData(&enemy_);
+	enemy_body_->SetUserData(enemy_);
 
-	enemy_.SetType(GameObject::enemy);
+	enemy_->SetObjectType(GameObject::enemy);
+
+	//gef::DebugOut("%s", enemy_->GetObjectType());
 
 	//speed
-	enemy_.SetSpeed(20);
+	enemy_->SetSpeed(20);
 
 	//apply force for direction
 	float max_force = 200;

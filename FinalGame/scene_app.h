@@ -9,6 +9,7 @@
 #include "game_object.h"
 #include <input/input_manager.h>
 #include <vector>
+#include <string>
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -59,7 +60,7 @@ private:
 
 	//enemy variables
 	gef::Vector4 enemy_dimensions_;
-	vector <GameObject> enemies_;
+	vector <GameObject*> enemies_;
 	vector <b2Body*> enemy_bodies_;
 
 	// ground variables
