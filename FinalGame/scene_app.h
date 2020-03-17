@@ -84,6 +84,8 @@ private:
 	gef::InputManager* input_;
 
 	float fps_;
+
+	float score;
 };
 
 #endif // _SCENE_APP_H

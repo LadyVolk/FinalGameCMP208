@@ -58,7 +58,7 @@ void SceneApp::Init()
 	srand(time(NULL));
 	rand();
 
-
+	score = 0;
 
 	InitPlayer();
 	player_is_dead = false;
@@ -105,6 +105,10 @@ void SceneApp::CleanUp()
 bool SceneApp::Update(float frame_time)
 {
 	int i;
+
+	if (!player_is_dead) {
+		score += frame_time;
+	}
 
 	fps_ = 1.0f / frame_time;
 
@@ -446,6 +450,7 @@ void SceneApp::DrawHUD()
 		// display frame rate
 		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
 		font_->RenderText(sprite_renderer_, gef::Vector4(10.0f, 10.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "LIFES: %d", player_.GetHealth());
+		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 10.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "SCORE: %.1f", score);
 		
 	}
 }
