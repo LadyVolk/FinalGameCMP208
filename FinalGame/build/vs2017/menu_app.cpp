@@ -26,7 +26,15 @@ MenuApp::MenuApp(gef::Platform& platform) :
 
 void MenuApp::Init()
 {	
+	gef::DebugOut("\n");
+	gef::DebugOut("------------ START NOW MENU INIT ------------");
+	gef::DebugOut("\n");
+
+
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
+
+	// create the renderer for draw 3D geometry
+	renderer_3d_ = gef::Renderer3D::Create(platform_);
 
 	// initialise primitive builder to make create some 3D geometry easier
 	primitive_builder_ = new PrimitiveBuilder(platform_);
@@ -81,6 +89,11 @@ void MenuApp::Render() {
 	view_matrix.LookAt(camera_eye, camera_lookat, camera_up);
 	renderer_3d_->set_view_matrix(view_matrix);
 
+	// draw 3d geometry
+	renderer_3d_->Begin();
+
+	renderer_3d_->End();
+
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
 	DrawHUD();
@@ -93,23 +106,21 @@ void MenuApp::CleanUpFont()
 	font_ = NULL;
 }
 
-void MenuApp::DrawHUD()
-{
-	if (font_)
-	{
-		// display frame rate
-		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MENU");
-		
-
-	}
-}
-
 void MenuApp::InitFont()
 {
 	font_ = new gef::Font(platform_);
 	font_->Load("comic_sans");
 }
 
+void MenuApp::DrawHUD()
+{
+	if (font_)
+	{
+		// display frame rate
+		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MENU");
+
+	}
+}
 
 void MenuApp::HandleInput(float timeStep) {
 	input_->Update();
