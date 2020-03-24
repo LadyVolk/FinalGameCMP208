@@ -36,6 +36,15 @@ private:
 	void CleanUpFont();
 	void DrawHUD();
 	void HandleInput(float timeStep);
+	void ProcessTouchInput();
+
+	//input
+	Int32 active_touch_id_;
+	gef::Vector2 touch_position_;
+
+	//difficulty
+	enum Difficulty { easy, medium, hard };
+	Difficulty difficulty_ = hard;
 
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;

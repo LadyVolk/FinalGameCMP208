@@ -20,6 +20,7 @@ namespace gef
 
 		static InputManager* Create(Platform& platform);
 
+		
 	protected:
 		InputManager(Platform& platform);
 

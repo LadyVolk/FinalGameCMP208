@@ -14,13 +14,15 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <input/touch_input_manager.h>
 
 
 MenuApp::MenuApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	primitive_builder_(NULL),
-	font_(NULL)
+	font_(NULL),
+	active_touch_id_(-1)
 {
 }
 
@@ -117,17 +119,79 @@ void MenuApp::DrawHUD()
 	if (font_)
 	{
 		// display frame rate
-		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MENU");
+		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 20.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "DEATH BALLS");
 
+		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 100.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Use arrows to choose dificulty:");
+
+		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 200.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'P' Play game");
+
+		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 300.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'Q' to quit the game");
+
+		switch (difficulty_) {
+			case easy:
+				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "EASY");
+			case medium:
+				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MEDIUM");
+			case hard:
+				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "HARD");
+		}
 	}
 }
 
 void MenuApp::HandleInput(float timeStep) {
 	input_->Update();
 
+
+	ProcessTouchInput();
+
 	gef::Keyboard* keyboard = input_->keyboard();
 
 	if (keyboard) {
 		
+	}
+}
+
+void MenuApp::ProcessTouchInput()
+{
+	const gef::TouchInputManager* touch_input = input_->touch_manager();
+	if (touch_input && (touch_input->max_num_panels() > 0))
+	{
+		// get the active touches for this panel
+		const gef::TouchContainer& panel_touches = touch_input->touches(0);
+
+		// go through the touches
+		for (gef::ConstTouchIterator touch = panel_touches.begin(); touch != panel_touches.end(); ++touch)
+		{
+			// if active touch id is -1, then we are not currently processing a touch
+			if (active_touch_id_ == -1)
+			{
+				// check for the start of a new touch
+				if (touch->type == gef::TT_NEW)
+				{
+					active_touch_id_ = touch->id;
+
+					// do any processing for a new touch here
+					// we're just going to record the position of the touch
+					touch_position_ = touch->position;
+				}
+			}
+			else if (active_touch_id_ == touch->id)
+			{
+				// we are processing touch data with a matching id to the one we are looking for
+				if (touch->type == gef::TT_ACTIVE)
+				{
+					// update an active touch here
+					// we're just going to record the position of the touch
+					touch_position_ = touch->position;
+				}
+				else if (touch->type == gef::TT_RELEASED)
+				{
+					// the touch we are tracking has been released
+					// perform any actions that need to happen when a touch is released here
+					// we're not doing anything here apart from resetting the active touch id
+					active_touch_id_ = -1;
+				}
+			}
+		}
 	}
 }
