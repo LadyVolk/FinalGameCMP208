@@ -32,6 +32,7 @@ void MenuApp::Init()
 	gef::DebugOut("------------ START NOW MENU INIT ------------");
 	gef::DebugOut("\n");
 
+	exit_menu = false;
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 
@@ -70,7 +71,13 @@ bool MenuApp::Update(float frame_time) {
 	//handle input
 	HandleInput(timeStep);
 
+
+	if (exit_menu) {
+		return false;
+	}
+
 	return true;
+
 }
 
 void MenuApp::Render() {
@@ -165,6 +172,9 @@ void MenuApp::HandleInput(float timeStep) {
 		}
 		if (keyboard->IsKeyPressed(keyboard->KC_Q)) {
 			exit(0);
+		}
+		if (keyboard->IsKeyPressed(keyboard->KC_P)) {
+			exit_menu = true;
 		}
 	}
 }

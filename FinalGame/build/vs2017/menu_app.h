@@ -38,6 +38,8 @@ private:
 	void HandleInput(float timeStep);
 	void ProcessTouchInput();
 
+	bool exit_menu;
+
 	//input
 	Int32 active_touch_id_;
 	gef::Vector2 touch_position_;

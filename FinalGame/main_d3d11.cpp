@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "menu_app.h"
+#include <system/debug_log.h>
 
 unsigned int sceLibcHeapSize = 128*1024*1024;	// Sets up the heap area size as 128MiB.
 
@@ -13,11 +14,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	// initialisation
 	gef::PlatformD3D11 platform(hInstance, 960, 544, false, true);
 
-	//SceneApp myApp(platform);
-	//myApp.Run();
-
 	MenuApp myApp(platform);
 	myApp.Run();
+
+	SceneApp GameApp(platform);
+	GameApp.Run();
 
 	return 0;
 }
