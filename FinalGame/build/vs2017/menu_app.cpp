@@ -130,10 +130,13 @@ void MenuApp::DrawHUD()
 		switch (difficulty_) {
 			case easy:
 				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "EASY");
+				break;
 			case medium:
 				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MEDIUM");
+				break;
 			case hard:
 				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "HARD");
+				break;
 		}
 	}
 }
@@ -147,7 +150,19 @@ void MenuApp::HandleInput(float timeStep) {
 	gef::Keyboard* keyboard = input_->keyboard();
 
 	if (keyboard) {
-		
+		if (keyboard->IsKeyPressed(keyboard->KC_LEFT)) {
+			difficulty_ = static_cast <Difficulty> (static_cast <int> (difficulty_) - 1);
+			if (difficulty_ == -1) {
+				difficulty_ = hard;
+			}
+			gef::DebugOut("%d \n", difficulty_);
+		}
+		if (keyboard->IsKeyPressed(keyboard->KC_RIGHT)) {
+			difficulty_ = static_cast <Difficulty> (static_cast <int> (difficulty_) + 1);
+			if (difficulty_ == 3) {
+				difficulty_ = easy;
+			}
+		}
 	}
 }
 
