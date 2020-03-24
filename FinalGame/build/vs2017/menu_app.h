@@ -30,8 +30,10 @@ public:
 	void CleanUp();
 	bool Update(float frame_time);
 	void Render();
+
 private:
-	
+
+
 	void InitFont();
 	void CleanUpFont();
 	void DrawHUD();

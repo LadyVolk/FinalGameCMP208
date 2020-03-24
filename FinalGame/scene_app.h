@@ -10,6 +10,7 @@
 #include <input/input_manager.h>
 #include <vector>
 #include <string>
+#include <platform/d3d11/system/platform_d3d11.h>
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -25,7 +26,8 @@ namespace gef
 class SceneApp : public gef::Application
 {
 public:
-	SceneApp(gef::Platform& platform);
+	enum Difficulty { easy, medium, hard };
+	SceneApp(gef::Platform& platform, Difficulty diff);
 	void Init();
 	void CleanUp();
 	bool Update(float frame_time);
@@ -48,7 +50,6 @@ private:
 	PrimitiveBuilder* primitive_builder_;
 
 	//difficulty
-	enum Difficulty {easy, medium, hard};
 	Difficulty difficulty_ = hard;
 
 	// create the physics world

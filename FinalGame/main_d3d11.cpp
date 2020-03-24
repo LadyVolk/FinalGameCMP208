@@ -17,8 +17,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	MenuApp myApp(platform);
 	myApp.Run();
 
-	SceneApp GameApp(platform);
-	GameApp.Run();
+	SceneApp gameApp(platform, SceneApp::easy );
+	gameApp.Run();
 
 	return 0;
 }

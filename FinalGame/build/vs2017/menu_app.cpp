@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <input/touch_input_manager.h>
+#include <platform/d3d11/system/platform_d3d11.h>
+#include "scene_app.h"
 
 
 MenuApp::MenuApp(gef::Platform& platform) :
@@ -62,6 +64,7 @@ void MenuApp::CleanUp()
 
 	delete renderer_3d_;
 	renderer_3d_ = NULL;
+
 }
 
 bool MenuApp::Update(float frame_time) {

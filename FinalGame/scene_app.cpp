@@ -17,14 +17,15 @@
 
 using namespace std;
 
-SceneApp::SceneApp(gef::Platform& platform) :
+SceneApp::SceneApp(gef::Platform& platform, Difficulty diff) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
 	font_(NULL),
 	world_(NULL),
-	player_body_(NULL)
+	player_body_(NULL),
+	difficulty_(diff)
 {
 }
 
