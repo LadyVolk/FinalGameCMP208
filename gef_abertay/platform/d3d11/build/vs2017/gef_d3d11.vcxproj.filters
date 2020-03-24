@@ -98,5 +98,8 @@
     <ClInclude Include="..\..\input\input_manager_d3d11.h">
       <Filter>input</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\audio\audio_manager_d3d11.h">
+      <Filter>audio</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -13,11 +13,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 	// initialisation
 	gef::PlatformD3D11 platform(hInstance, 960, 544, false, true);
 
-	//SceneApp myApp(platform);
-	//myApp.Run();
-
-	MenuApp myApp(platform);
+	SceneApp myApp(platform);
 	myApp.Run();
+
+	//MenuApp myApp(platform);
+	//myApp.Run();
 
 	return 0;
 }
