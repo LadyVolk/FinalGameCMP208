@@ -163,6 +163,9 @@ void MenuApp::HandleInput(float timeStep) {
 				difficulty_ = easy;
 			}
 		}
+		if (keyboard->IsKeyPressed(keyboard->KC_Q)) {
+			exit(0);
+		}
 	}
 }
 
