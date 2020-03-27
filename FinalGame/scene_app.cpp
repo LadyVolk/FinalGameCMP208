@@ -17,7 +17,7 @@
 
 using namespace std;
 
-SceneApp::SceneApp(gef::Platform& platform, Difficulty diff) :
+SceneApp::SceneApp(gef::Platform& platform, GameData *data) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	renderer_3d_(NULL),
@@ -25,7 +25,7 @@ SceneApp::SceneApp(gef::Platform& platform, Difficulty diff) :
 	font_(NULL),
 	world_(NULL),
 	player_body_(NULL),
-	difficulty_(diff)
+	data_(data)
 {
 }
 
@@ -66,14 +66,14 @@ void SceneApp::Init()
 	InitGround();
 	InitWalls();
 	
-	switch (difficulty_) {
-		case hard:
+	switch (data_->difficulty_) {
+		case GameData::hard:
 			CreateEnemy(6);
 			CreateEnemy(-6);
-		case medium:
+		case GameData::medium:
 			CreateEnemy(4);
 			CreateEnemy(-4);
-		case easy:
+		case GameData::easy:
 			CreateEnemy(2);
 			CreateEnemy(-2);
 	}

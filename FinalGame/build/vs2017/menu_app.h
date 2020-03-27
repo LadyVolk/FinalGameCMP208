@@ -10,6 +10,7 @@
 #include <input/input_manager.h>
 #include <vector>
 #include <string>
+#include "GameData.h"
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -25,7 +26,7 @@ namespace gef
 class MenuApp : public gef::Application
 {
 public:
-	MenuApp(gef::Platform& platform);
+	MenuApp(gef::Platform& platform, GameData *data);
 	void Init();
 	void CleanUp();
 	bool Update(float frame_time);
@@ -47,8 +48,7 @@ private:
 	gef::Vector2 touch_position_;
 
 	//difficulty
-	enum Difficulty { easy, medium, hard };
-	Difficulty difficulty_ = hard;
+	GameData *data_;
 
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;

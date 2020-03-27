@@ -16,15 +16,15 @@
 #include <stdio.h>
 #include <input/touch_input_manager.h>
 #include <platform/d3d11/system/platform_d3d11.h>
-#include "scene_app.h"
 
 
-MenuApp::MenuApp(gef::Platform& platform) :
+MenuApp::MenuApp(gef::Platform& platform, GameData *data) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	primitive_builder_(NULL),
 	font_(NULL),
-	active_touch_id_(-1)
+	active_touch_id_(-1),
+	data_(data)
 {
 }
 
@@ -64,6 +64,7 @@ void MenuApp::CleanUp()
 
 	delete renderer_3d_;
 	renderer_3d_ = NULL;
+
 
 }
 
@@ -137,14 +138,14 @@ void MenuApp::DrawHUD()
 
 		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 300.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'Q' to quit the game");
 
-		switch (difficulty_) {
-			case easy:
+		switch (data_->difficulty_) {
+			case GameData::easy:
 				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "EASY");
 				break;
-			case medium:
+			case  GameData::medium:
 				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MEDIUM");
 				break;
-			case hard:
+			case GameData::hard:
 				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "HARD");
 				break;
 		}
@@ -160,19 +161,26 @@ void MenuApp::HandleInput(float timeStep) {
 	gef::Keyboard* keyboard = input_->keyboard();
 
 	if (keyboard) {
-		if (keyboard->IsKeyPressed(keyboard->KC_LEFT)) {
-			difficulty_ = static_cast <Difficulty> (static_cast <int> (difficulty_) - 1);
-			if (difficulty_ == -1) {
-				difficulty_ = hard;
+		int diff_int = static_cast <int> (data_->difficulty_);
+		if (keyboard->IsKeyPressed(keyboard->KC_LEFT)) {	
+			diff_int--;
+			if (diff_int == -1) {
+				data_->difficulty_ = GameData::hard;
 			}
-			gef::DebugOut("%d \n", difficulty_);
+			else {
+				data_->difficulty_ = static_cast <GameData::Difficulty> (diff_int);
+			}
 		}
 		if (keyboard->IsKeyPressed(keyboard->KC_RIGHT)) {
-			difficulty_ = static_cast <Difficulty> (static_cast <int> (difficulty_) + 1);
-			if (difficulty_ == 3) {
-				difficulty_ = easy;
+			diff_int++;
+			if (diff_int == 3) {
+				data_->difficulty_ = GameData::easy;
+			}
+			else {
+				data_->difficulty_ = static_cast <GameData::Difficulty> (diff_int);;
 			}
 		}
+		
 		if (keyboard->IsKeyPressed(keyboard->KC_Q)) {
 			exit(0);
 		}

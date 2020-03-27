@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 #include <platform/d3d11/system/platform_d3d11.h>
-
+#include "GameData.h"
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -26,8 +26,7 @@ namespace gef
 class SceneApp : public gef::Application
 {
 public:
-	enum Difficulty { easy, medium, hard };
-	SceneApp(gef::Platform& platform, Difficulty diff);
+	SceneApp(gef::Platform& platform, GameData *data);
 	void Init();
 	void CleanUp();
 	bool Update(float frame_time);
@@ -50,7 +49,7 @@ private:
 	PrimitiveBuilder* primitive_builder_;
 
 	//difficulty
-	Difficulty difficulty_ = hard;
+	GameData* data_;
 
 	// create the physics world
 	b2World* world_;
