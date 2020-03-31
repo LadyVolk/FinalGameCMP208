@@ -61,6 +61,20 @@ void SceneApp::Init()
 
 	score = 0;
 
+	// load the assets in from the .scn
+	const char* scene_asset_filename = "final_moon.scn";
+
+	scene_assets_ = LoadSceneAssets(platform_, scene_asset_filename);
+
+	if (scene_assets_)
+	{
+		moon_mesh_.set_mesh(GetMeshFromSceneAssets(scene_assets_));
+	}
+	else
+	{
+		gef::DebugOut("Scene file %s failed to load\n", scene_asset_filename);
+	}
+
 	InitPlayer();
 	player_is_dead = false;
 	InitGround();
@@ -80,6 +94,7 @@ void SceneApp::Init()
 	
 	//create input object
 	input_ = gef::InputManager::Create(platform_);
+
 }
 
 void SceneApp::CleanUp()
@@ -101,6 +116,9 @@ void SceneApp::CleanUp()
 
 	delete sprite_renderer_;
 	sprite_renderer_ = NULL;
+
+	delete scene_assets_;
+	scene_assets_ = NULL;
 }
 
 bool SceneApp::Update(float frame_time)
@@ -223,9 +241,9 @@ void SceneApp::Render()
 
 	// draw player
 	if (!player_is_dead) {
-		renderer_3d_->set_override_material(&primitive_builder_->blue_material());
+		//renderer_3d_->set_override_material(&primitive_builder_->blue_material());
 		renderer_3d_->DrawMesh(player_);
-		renderer_3d_->set_override_material(NULL);
+		//renderer_3d_->set_override_material(NULL);
 	}
 	
 
@@ -247,7 +265,8 @@ void SceneApp::Render()
 void SceneApp::InitPlayer()
 {
 	// setup the mesh for the player
-	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+	//player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+	player_.set_mesh(moon_mesh_.mesh());
 
 	// create a physics body for the player
 	b2BodyDef player_body_def;
@@ -360,6 +379,38 @@ void SceneApp::CreateEnemy(float x) {
 	enemies_.push_back(enemy_);
 	enemy_bodies_.push_back(enemy_body_);
 
+}
+
+gef::Scene* SceneApp::LoadSceneAssets(gef::Platform& platform, const char* filename)
+{
+	gef::Scene* scene = new gef::Scene();
+
+	if (scene->ReadSceneFromFile(platform, filename))
+	{
+		// if scene file loads successful
+		// create material and mesh resources from the scene data
+		scene->CreateMaterials(platform);
+		scene->CreateMeshes(platform);
+	}
+	else
+	{
+		delete scene;
+		scene = NULL;
+	}
+
+	return scene;
+}
+
+gef::Mesh* SceneApp::GetMeshFromSceneAssets(gef::Scene* scene)
+{
+	gef::Mesh* mesh = NULL;
+
+	// if the scene data contains at least one mesh
+	// return the first mesh
+	if (scene && scene->meshes.size() > 0)
+		mesh = scene->meshes.front();
+
+	return mesh;
 }
 
 void SceneApp::InitGround()

@@ -12,6 +12,7 @@
 #include <string>
 #include <platform/d3d11/system/platform_d3d11.h>
 #include "GameData.h"
+#include "graphics/scene.h"
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -51,6 +52,10 @@ private:
 	//difficulty
 	GameData* data_;
 
+	//load assets
+	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);
+	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
+
 	// create the physics world
 	b2World* world_;
 
@@ -86,6 +91,11 @@ private:
 	float fps_;
 
 	float score;
+
+	//assets
+	gef::Scene* model_scene_;
+	gef::MeshInstance moon_mesh_;
+	gef::Scene* scene_assets_;
 };
 
 #endif // _SCENE_APP_H
