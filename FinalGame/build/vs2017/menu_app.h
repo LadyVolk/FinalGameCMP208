@@ -47,6 +47,8 @@ private:
 	//sound
 	gef::AudioManager* audio_manager_;
 	int id_music_menu_;
+	//sound chnage difficult
+	int id_change_difficult;
 
 	//input
 	Int32 active_touch_id_;
