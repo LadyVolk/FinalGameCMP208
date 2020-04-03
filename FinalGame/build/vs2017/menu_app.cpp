@@ -36,8 +36,11 @@ void MenuApp::Init()
 
 	//sound stuff
 	audio_manager_ = gef::AudioManager::Create();
+	gef::VolumeInfo volume_;
+	volume_.volume = 6.0;
 	id_music_menu_ = audio_manager_->LoadSample("cleric_path.wav", platform_);
-	audio_manager_->PlaySample(id_music_menu_);
+	int id_sample_new = audio_manager_->PlaySample(id_music_menu_, true);
+	audio_manager_->SetSampleVoiceVolumeInfo(id_sample_new, volume_);
 
 	exit_menu = false;
 
