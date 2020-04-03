@@ -14,6 +14,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "audio/audio_manager.h"
 
 using namespace std;
 
@@ -34,6 +35,9 @@ void SceneApp::Init()
 	gef::DebugOut("\n");
 	gef::DebugOut("------------ START NOW INIT ------------");
 	gef::DebugOut("\n");
+
+	//sound stuff
+	
 
 	//setting arena variables
 	arena_dimensions_.set_value(30.f, 1.f, 5.0f);
@@ -119,6 +123,8 @@ void SceneApp::CleanUp()
 
 	delete scene_assets_;
 	scene_assets_ = NULL;
+
+	
 }
 
 bool SceneApp::Update(float frame_time)
@@ -265,8 +271,14 @@ void SceneApp::Render()
 void SceneApp::InitPlayer()
 {
 	// setup the mesh for the player
+
+	//gef::Matrix44 escala;
+
+	//escala.Scale(gef::Vector4(50, 50, 50, 50));
+
 	//player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
 	player_.set_mesh(moon_mesh_.mesh());
+	//player_.set_transform(escala);
 
 	// create a physics body for the player
 	b2BodyDef player_body_def;
@@ -279,7 +291,7 @@ void SceneApp::InitPlayer()
 
 	// create the shape for the player
 	b2PolygonShape player_shape;
-	player_shape.SetAsBox(0.5f, 0.5f);
+	player_shape.SetAsBox(1.5f, 1.5f);
 
 	// create the fixture
 	b2FixtureDef player_fixture_def;

@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include "GameData.h"
+#include "audio/audio_manager.h"
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -42,6 +43,10 @@ private:
 	void ProcessTouchInput();
 
 	bool exit_menu;
+
+	//sound
+	gef::AudioManager* audio_manager_;
+	int id_music_menu_;
 
 	//input
 	Int32 active_touch_id_;

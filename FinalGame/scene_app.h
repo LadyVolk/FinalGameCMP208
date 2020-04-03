@@ -13,6 +13,7 @@
 #include <platform/d3d11/system/platform_d3d11.h>
 #include "GameData.h"
 #include "graphics/scene.h"
+#include "audio/audio_manager.h"
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -51,6 +52,9 @@ private:
 
 	//difficulty
 	GameData* data_;
+
+	//sound
+	
 
 	//load assets
 	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);

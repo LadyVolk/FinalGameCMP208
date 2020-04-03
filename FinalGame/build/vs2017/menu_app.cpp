@@ -34,6 +34,11 @@ void MenuApp::Init()
 	gef::DebugOut("------------ START NOW MENU INIT ------------");
 	gef::DebugOut("\n");
 
+	//sound stuff
+	audio_manager_ = gef::AudioManager::Create();
+	id_music_menu_ = audio_manager_->LoadSample("cleric_path.wav", platform_);
+	audio_manager_->PlaySample(id_music_menu_);
+
 	exit_menu = false;
 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
@@ -65,6 +70,10 @@ void MenuApp::CleanUp()
 	delete renderer_3d_;
 	renderer_3d_ = NULL;
 
+	audio_manager_->UnloadAllSamples();
+
+	delete audio_manager_;
+	audio_manager_ = NULL;
 
 }
 
