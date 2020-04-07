@@ -328,7 +328,7 @@ void SceneApp::InitPlayer()
 
 	// create the shape for the player
 	b2PolygonShape player_shape;
-	player_shape.SetAsBox(1.5f, 1.5f);
+	player_shape.SetAsBox(1.6f, 1.6f);
 
 	// create the fixture
 	b2FixtureDef player_fixture_def;
@@ -348,7 +348,7 @@ void SceneApp::InitPlayer()
 	player_.SetObjectType(GameObject::player);
 
 	//speed
-	player_.SetSpeed(30);
+	player_.SetSpeed(200);
 
 	//set health
 	player_.SetHealth(3);
