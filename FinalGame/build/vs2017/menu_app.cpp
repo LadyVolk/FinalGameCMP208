@@ -78,6 +78,8 @@ void MenuApp::CleanUp()
 
 	audio_manager_->UnloadAllSamples();
 
+	audio_manager_->UnloadMusic();
+
 	delete audio_manager_;
 	audio_manager_ = NULL;
 

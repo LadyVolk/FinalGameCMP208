@@ -42,8 +42,12 @@ void SceneApp::Init()
 	gef::VolumeInfo volume_;
 	volume_.volume = 6.0;
 
-	id_music_menu_ = audio_manager_->LoadMusic("game_music.ogg", platform_);
+	id_music_menu_ = audio_manager_->LoadMusic("game_music.wav", platform_);
 	int id_sample_new = audio_manager_->PlayMusic();
+	audio_manager_->SetMusicVolumeInfo(volume_);
+
+	int id_start_sound = audio_manager_->LoadSample("start.wav", platform_);
+	int id_sample_ = audio_manager_->PlaySample(id_start_sound);
 	audio_manager_->SetMusicVolumeInfo(volume_);
 
 	//setting arena variables
@@ -131,6 +135,12 @@ void SceneApp::CleanUp()
 	delete scene_assets_;
 	scene_assets_ = NULL;
 
+	audio_manager_->UnloadAllSamples();
+
+	audio_manager_->UnloadMusic();
+
+	delete audio_manager_;
+	audio_manager_ = NULL;
 	
 }
 
