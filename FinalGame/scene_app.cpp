@@ -52,9 +52,11 @@ void SceneApp::Init()
 	audio_manager_->SetSampleVoiceVolumeInfo(id_start_sound_, volume_2);
 	int id_sample_ = audio_manager_->PlaySample(id_start_sound_);
 
-	id_death_sound_ = audio_manager_->LoadSample("player_death.wav", platform_);
+	id_damage_sound_ = audio_manager_->LoadSample("damage.wav", platform_);
 
 	id_hit_enemy_sound_ = audio_manager_->LoadSample("hit_enemy.wav", platform_);
+
+	id_death_sound_ = audio_manager_->LoadSample("death.wav", platform_);
 	
 	
 
@@ -211,6 +213,9 @@ bool SceneApp::Update(float frame_time)
 					(type_a == GameObject::enemy && type_b == GameObject::player)) {
 					if (type_a == GameObject::player) {
 						dataA->DealDamage();
+					
+						
+
 						if (dataA->GetHealth() <= 0) {
 							audio_manager_->StopPlayingSampleVoice(id_start_sound_);
 							gef::VolumeInfo* volume = new gef::VolumeInfo();
@@ -218,7 +223,12 @@ bool SceneApp::Update(float frame_time)
 							audio_manager_->SetSampleVoiceVolumeInfo(id_death_sound_, *volume);
 							int id_sample_death_ = audio_manager_->PlaySample(id_death_sound_);
 							destroy_player = true;
-							
+						}
+						else {
+							gef::VolumeInfo* volume = new gef::VolumeInfo();
+							volume->volume = 60.0f;
+							audio_manager_->SetSampleVoiceVolumeInfo(id_damage_sound_, *volume);
+							int id_sample_damage_ = audio_manager_->PlaySample(id_damage_sound_);
 						}
 					}
 					else {

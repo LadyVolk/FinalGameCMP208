@@ -61,6 +61,8 @@ private:
 
 	int id_hit_enemy_sound_;
 
+	int id_damage_sound_;
+
 	int id_death_sound_;
 
 	//load assets
