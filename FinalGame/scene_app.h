@@ -59,6 +59,8 @@ private:
 
 	int id_start_sound_;
 
+	int id_hit_enemy_sound_;
+
 	int id_death_sound_;
 
 	//load assets
