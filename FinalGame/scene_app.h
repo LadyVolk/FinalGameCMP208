@@ -54,7 +54,8 @@ private:
 	GameData* data_;
 
 	//sound
-	
+	gef::AudioManager* audio_manager_;
+	int id_music_menu_;
 
 	//load assets
 	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);

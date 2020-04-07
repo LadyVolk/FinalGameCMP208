@@ -43,7 +43,7 @@ void MenuApp::Init()
 	int id_sample_new = audio_manager_->PlayMusic();
 	audio_manager_->SetMusicVolumeInfo(volume_);
 
-	id_change_difficult = audio_manager_->LoadSample("change_difficult.wav", platform_);
+	id_change_difficult_ = audio_manager_->LoadSample("change_difficult.wav", platform_);
 
 	exit_menu = false;
 
@@ -175,18 +175,15 @@ void MenuApp::HandleInput(float timeStep) {
 	gef::VolumeInfo volume_difficult;
 	volume_difficult.volume = 6.0f;
 
-
-
 	gef::Keyboard* keyboard = input_->keyboard();
 
 	if (keyboard) {
 		int diff_int = static_cast <int> (data_->difficulty_);
 		if (keyboard->IsKeyPressed(keyboard->KC_LEFT)) {
 
-			int id_sample_new = audio_manager_->PlaySample(id_change_difficult, false);
+			//sound for difficult change
+			int id_sample_new = audio_manager_->PlaySample(id_change_difficult_, false);
 			audio_manager_->SetSampleVoiceVolumeInfo(id_sample_new, volume_difficult);
-		
-			
 
 			diff_int--;
 			if (diff_int == -1) {
@@ -198,7 +195,7 @@ void MenuApp::HandleInput(float timeStep) {
 		}
 		if (keyboard->IsKeyPressed(keyboard->KC_RIGHT)) {
 
-			int id_sample_new = audio_manager_->PlaySample(id_change_difficult, false);
+			int id_sample_new = audio_manager_->PlaySample(id_change_difficult_, false);
 			audio_manager_->SetSampleVoiceVolumeInfo(id_sample_new, volume_difficult);
 
 			diff_int++;
@@ -209,11 +206,12 @@ void MenuApp::HandleInput(float timeStep) {
 				data_->difficulty_ = static_cast <GameData::Difficulty> (diff_int);;
 			}
 		}
-		
+
 		if (keyboard->IsKeyPressed(keyboard->KC_Q)) {
 			exit(0);
 		}
 		if (keyboard->IsKeyPressed(keyboard->KC_P)) {
+
 			exit_menu = true;
 		}
 	}

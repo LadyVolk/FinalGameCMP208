@@ -47,8 +47,12 @@ private:
 	//sound
 	gef::AudioManager* audio_manager_;
 	int id_music_menu_;
+
 	//sound chnage difficult
-	int id_change_difficult;
+	int id_change_difficult_;
+
+	//sound start game
+	int id_start_effect_;
 
 	//input
 	Int32 active_touch_id_;
