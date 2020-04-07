@@ -214,8 +214,6 @@ bool SceneApp::Update(float frame_time)
 					if (type_a == GameObject::player) {
 						dataA->DealDamage();
 					
-						
-
 						if (dataA->GetHealth() <= 0) {
 							audio_manager_->StopPlayingSampleVoice(id_start_sound_);
 							gef::VolumeInfo* volume = new gef::VolumeInfo();

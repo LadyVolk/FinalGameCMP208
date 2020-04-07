@@ -12,6 +12,10 @@
 #include <string>
 #include "GameData.h"
 #include "audio/audio_manager.h"
+#include "graphics/image_data.h"
+#include "graphics/texture.h"
+#include "graphics/sprite.h"
+#include "graphics/sprite_renderer.h"
 
 
 // FRAMEWORK FORWARD DECLARATIONS
@@ -41,8 +45,13 @@ private:
 	void DrawHUD();
 	void HandleInput(float timeStep);
 	void ProcessTouchInput();
-
+	void DrawSplashScreen();
 	bool exit_menu;
+
+	//splash screen
+	gef::ImageData* splash_screen_;
+	gef::Texture* splash_texture_;
+	gef::Sprite* splash_sprite_;
 
 	//sound
 	gef::AudioManager* audio_manager_;

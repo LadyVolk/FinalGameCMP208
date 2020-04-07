@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <input/touch_input_manager.h>
 #include <platform/d3d11/system/platform_d3d11.h>
+#include "assets/png_loader.h"
 
 
 MenuApp::MenuApp(gef::Platform& platform, GameData *data) :
@@ -33,6 +34,18 @@ void MenuApp::Init()
 	gef::DebugOut("\n");
 	gef::DebugOut("------------ START NOW MENU INIT ------------");
 	gef::DebugOut("\n");
+
+	//splash screen stuff
+	splash_screen_ = new gef::ImageData();
+	gef::PNGLoader loader_;
+	
+	loader_.Load("Abertay_University_Logo.png", platform_, *splash_screen_);
+
+	splash_texture_ = gef::Texture::Create(platform_, *splash_screen_);
+	splash_sprite_ = new gef::Sprite();
+	splash_sprite_->set_texture(splash_texture_);
+	
+
 
 	//sound stuff
 	//sound music menu
@@ -103,7 +116,6 @@ bool MenuApp::Update(float frame_time) {
 
 void MenuApp::Render() {
 
-
 	// projection
 	float fov = gef::DegToRad(45.0f);
 	float aspect_ratio = (float)platform_.width() / (float)platform_.height();
@@ -126,7 +138,9 @@ void MenuApp::Render() {
 
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
+	
 	DrawHUD();
+	DrawSplashScreen();
 	sprite_renderer_->End();
 }
 
@@ -262,4 +276,8 @@ void MenuApp::ProcessTouchInput()
 			}
 		}
 	}
+}
+
+void MenuApp::DrawSplashScreen() {
+	sprite_renderer_->DrawSprite(*splash_sprite_);
 }
