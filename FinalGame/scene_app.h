@@ -57,6 +57,10 @@ private:
 	gef::AudioManager* audio_manager_;
 	int id_music_menu_;
 
+	int id_start_sound_;
+
+	int id_death_sound_;
+
 	//load assets
 	gef::Scene* LoadSceneAssets(gef::Platform& platform, const char* filename);
 	gef::Mesh* GetMeshFromSceneAssets(gef::Scene* scene);
