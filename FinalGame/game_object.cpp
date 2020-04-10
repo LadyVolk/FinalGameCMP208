@@ -11,6 +11,10 @@ void GameObject::UpdateFromSimulation(const b2Body* body)
 {
 	if (body)
 	{
+		//set up object scale
+		gef::Matrix44 object_scale;
+		object_scale.Scale(scale);
+
 		// setup object rotation
 		gef::Matrix44 object_rotation;
 		object_rotation.RotationZ(body->GetAngle());
@@ -19,7 +23,7 @@ void GameObject::UpdateFromSimulation(const b2Body* body)
 		gef::Vector4 object_translation(body->GetPosition().x, body->GetPosition().y, 0.0f);
 
 		// build object transformation matrix
-		gef::Matrix44 object_transform = object_rotation;
+		gef::Matrix44 object_transform = object_rotation*object_scale;
 		object_transform.SetTranslation(object_translation);
 		set_transform(object_transform);
 	}

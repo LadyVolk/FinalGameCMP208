@@ -316,14 +316,9 @@ void SceneApp::Render()
 void SceneApp::InitPlayer()
 {
 	// setup the mesh for the player
+	player_.scale = gef::Vector4(0.5, 0.5, 0.5, 1);
 
-	//gef::Matrix44 escala;
-
-	//escala.Scale(gef::Vector4(50, 50, 50, 50));
-
-	//player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
 	player_.set_mesh(moon_mesh_.mesh());
-	//player_.set_transform(escala);
 
 	// create a physics body for the player
 	b2BodyDef player_body_def;
@@ -336,7 +331,7 @@ void SceneApp::InitPlayer()
 
 	// create the shape for the player
 	b2PolygonShape player_shape;
-	player_shape.SetAsBox(1.6f, 1.6f);
+	player_shape.SetAsBox(0.7f, 0.7f);
 
 	// create the fixture
 	b2FixtureDef player_fixture_def;

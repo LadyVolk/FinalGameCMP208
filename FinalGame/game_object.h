@@ -30,6 +30,8 @@ public:
 	void SetHealth(int health_);
 	int GetHealth();
 
+	gef::Vector4 scale = gef::Vector4(1, 1, 1, 1);
+
 	void DealDamage();
 
 	

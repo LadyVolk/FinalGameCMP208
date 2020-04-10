@@ -140,7 +140,9 @@ void MenuApp::Render() {
 	sprite_renderer_->Begin(false);
 	
 	DrawHUD();
+
 	DrawSplashScreen();
+
 	sprite_renderer_->End();
 }
 
