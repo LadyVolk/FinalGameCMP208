@@ -45,7 +45,22 @@ void MenuApp::Init()
 	splash_sprite_ = new gef::Sprite();
 	splash_sprite_->set_texture(splash_texture_);
 	
+	splash_sprite_->set_position(gef::Vector4(480, 272, 0, 1));
+	splash_sprite_->set_width(300.0f);
+	splash_sprite_->set_height(350.0f);
 
+	//splash screen lobo logo
+	splash_screen_logo_ = new gef::ImageData();
+
+	loader_.Load("lobo_logo.png", platform_, *splash_screen_logo_);
+
+	splash_texture_logo_ = gef::Texture::Create(platform_, *splash_screen_logo_);
+	splash_sprite_logo_ = new gef::Sprite();
+	splash_sprite_logo_->set_texture(splash_texture_logo_);
+
+	splash_sprite_logo_->set_position(gef::Vector4(480, 272, 0, 1));
+	splash_sprite_logo_->set_width(960.0f);
+	splash_sprite_logo_->set_height(544.0f);
 
 	//sound stuff
 	//sound music menu
@@ -101,6 +116,8 @@ void MenuApp::CleanUp()
 bool MenuApp::Update(float frame_time) {
 	
 	float timeStep = 1.0f / 60.0f;
+	timerao += frame_time;
+	
 
 	//handle input
 	HandleInput(timeStep);
@@ -160,7 +177,7 @@ void MenuApp::InitFont()
 
 void MenuApp::DrawHUD()
 {
-	if (font_)
+	if (font_ && timerao > 8)
 	{
 		// display frame rate
 		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 20.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "DEATH BALLS");
@@ -281,5 +298,12 @@ void MenuApp::ProcessTouchInput()
 }
 
 void MenuApp::DrawSplashScreen() {
-	sprite_renderer_->DrawSprite(*splash_sprite_);
+
+	if (timerao < 3.0) {
+		sprite_renderer_->DrawSprite(*splash_sprite_);
+	}
+	else if (timerao > 3.0 && timerao < 6.0) {
+		sprite_renderer_->DrawSprite(*splash_sprite_logo_);
+	}
+	
 }

@@ -49,9 +49,16 @@ private:
 	bool exit_menu;
 
 	//splash screen
+	float timerao = 0.0f;
+
 	gef::ImageData* splash_screen_;
+	gef::ImageData* splash_screen_logo_;
+
 	gef::Texture* splash_texture_;
+	gef::Texture* splash_texture_logo_;
+
 	gef::Sprite* splash_sprite_;
+	gef::Sprite* splash_sprite_logo_;
 
 	//sound
 	gef::AudioManager* audio_manager_;
