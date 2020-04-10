@@ -46,6 +46,7 @@ private:
 	void HandleInput(float timeStep);
 	void ProcessTouchInput();
 	void DrawSplashScreen();
+	UInt32 GetWhiteWithAlpha(UInt32 alpha);
 	bool exit_menu;
 
 	//splash screen

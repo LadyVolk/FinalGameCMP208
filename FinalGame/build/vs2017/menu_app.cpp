@@ -116,12 +116,14 @@ void MenuApp::CleanUp()
 bool MenuApp::Update(float frame_time) {
 	
 	float timeStep = 1.0f / 60.0f;
-	timerao += frame_time;
 	
-
-	//handle input
-	HandleInput(timeStep);
-
+	if (timerao < 8.0) {
+		timerao += frame_time;
+	}
+	else {
+		//handle input
+		HandleInput(timeStep);
+	}
 
 	if (exit_menu) {
 		return false;
@@ -177,7 +179,7 @@ void MenuApp::InitFont()
 
 void MenuApp::DrawHUD()
 {
-	if (font_ && timerao > 8)
+	if (font_ && timerao > 6)
 	{
 		// display frame rate
 		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 20.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "DEATH BALLS");
@@ -298,12 +300,33 @@ void MenuApp::ProcessTouchInput()
 }
 
 void MenuApp::DrawSplashScreen() {
-
+	UInt32 alpha;
 	if (timerao < 3.0) {
+		if (timerao < 1.5) {
+			alpha = (timerao / 1.5) * 255;
+		}
+		else {
+			alpha = (1.0 - ((timerao - 1.5) / 1.5)) * 255;
+		}
+		splash_sprite_->set_colour(GetWhiteWithAlpha(alpha));
 		sprite_renderer_->DrawSprite(*splash_sprite_);
 	}
-	else if (timerao > 3.0 && timerao < 6.0) {
+	else if (timerao < 6.0) {
+		if (timerao < 4.5) {
+			alpha = ((timerao - 3.0) / 1.5) * 255;
+		}
+		else {
+			alpha = (1.0 - ((timerao - 4.5) / 1.5)) * 255;
+		}
+		splash_sprite_logo_->set_colour(GetWhiteWithAlpha(alpha));
 		sprite_renderer_->DrawSprite(*splash_sprite_logo_);
 	}
 	
+}
+
+UInt32 MenuApp::GetWhiteWithAlpha(UInt32 alpha) {
+	alpha = alpha * 16777216; //2 by the power of 24 (to shift the hexadecimal 6 times)
+	UInt32 white = (0x00ffffff);
+	return white + alpha;
+
 }
