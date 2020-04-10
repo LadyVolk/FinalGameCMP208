@@ -181,24 +181,35 @@ void MenuApp::DrawHUD()
 {
 	if (font_ && timerao > 6)
 	{
+		UInt32 color;
+
+		if (timerao < 8) {
+			UInt32 alpha = ((timerao - 6.0) / 2.0) * 255;
+			color = GetWhiteWithAlpha(alpha);
+		}
+		else {
+			color = 0xffffffff;
+		}
+		
+
 		// display frame rate
-		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 20.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "DEATH BALLS");
+		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 20.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "DEATH BALLS");
 
-		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 100.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Use arrows to choose dificulty:");
+		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 140.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "Use arrows to choose dificulty:");
 
-		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 200.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'P' Play game");
+		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 300.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "Press 'P' Play game");
 
-		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 300.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'Q' to quit the game");
+		font_->RenderText(sprite_renderer_, gef::Vector4(300.0f, 420.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "Press 'Q' to quit the game");
 
 		switch (data_->difficulty_) {
 			case GameData::easy:
-				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "EASY");
+				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 210.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "EASY");
 				break;
 			case  GameData::medium:
-				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "MEDIUM");
+				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 210.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "MEDIUM");
 				break;
 			case GameData::hard:
-				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 150.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "HARD");
+				font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 210.0f, -0.9f), 1.0f, color, gef::TJ_LEFT, "HARD");
 				break;
 		}
 	}
