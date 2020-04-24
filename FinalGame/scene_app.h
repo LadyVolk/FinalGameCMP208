@@ -106,8 +106,8 @@ private:
 	float score;
 
 	//assets
-	gef::Scene* model_scene_;
-	gef::MeshInstance moon_mesh_;
+	gef::Scene* player_model_;
+	gef::MeshInstance player_mesh_;
 	gef::Scene* scene_assets_;
 };
 

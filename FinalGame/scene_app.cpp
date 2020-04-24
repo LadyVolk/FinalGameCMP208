@@ -87,13 +87,13 @@ void SceneApp::Init()
 	score = 0;
 
 	// load the assets in from the .scn
-	const char* scene_asset_filename = "final_moon.scn";
+	const char* scene_asset_filename = "cat.scn";
 
 	scene_assets_ = LoadSceneAssets(platform_, scene_asset_filename);
-
+	
 	if (scene_assets_)
 	{
-		moon_mesh_.set_mesh(GetMeshFromSceneAssets(scene_assets_));
+		player_mesh_.set_mesh(GetMeshFromSceneAssets(scene_assets_));
 	}
 	else
 	{
@@ -316,14 +316,18 @@ void SceneApp::Render()
 void SceneApp::InitPlayer()
 {
 	// setup the mesh for the player
-	player_.scale = gef::Vector4(0.5, 0.5, 0.5, 1);
+	player_.scale = gef::Vector4(0.01, 0.01, 0.01, 1);
 
-	player_.set_mesh(moon_mesh_.mesh());
+	player_.set_mesh(player_mesh_.mesh());
 
 	// create a physics body for the player
 	b2BodyDef player_body_def;
 	player_body_def.type = b2_dynamicBody;
 	player_body_def.position = b2Vec2(0.0f, 4.0f);
+	//set up asset rotation
+	player_body_def.angle = 3.0;
+	player_.rotation_x = 0.0;
+	player_.rotation_y = 3.0;
 	//fixed rotation
 	player_body_def.fixedRotation = true;
 
@@ -332,6 +336,8 @@ void SceneApp::InitPlayer()
 	// create the shape for the player
 	b2PolygonShape player_shape;
 	player_shape.SetAsBox(0.7f, 0.7f);
+	
+
 
 	// create the fixture
 	b2FixtureDef player_fixture_def;
@@ -436,7 +442,7 @@ void SceneApp::CreateEnemy(float x) {
 gef::Scene* SceneApp::LoadSceneAssets(gef::Platform& platform, const char* filename)
 {
 	gef::Scene* scene = new gef::Scene();
-
+	
 	if (scene->ReadSceneFromFile(platform, filename))
 	{
 		// if scene file loads successful

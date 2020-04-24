@@ -13,6 +13,7 @@
 #include <system/memory_stream_buffer.h>
 #include <fstream>
 #include <assert.h>
+#include "system/debug_log.h"
 
 namespace gef
 {
@@ -190,7 +191,7 @@ namespace gef
 				}
 
 			}
-
+			gef::DebugOut("222222222");
 			file->Close();
 		}
 		return success;

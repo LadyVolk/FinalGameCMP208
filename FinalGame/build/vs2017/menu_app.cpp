@@ -120,10 +120,9 @@ bool MenuApp::Update(float frame_time) {
 	if (timerao < 8.0) {
 		timerao += frame_time;
 	}
-	else {
-		//handle input
-		HandleInput(timeStep);
-	}
+
+	//handle input
+	HandleInput(timeStep);
 
 	if (exit_menu) {
 		return false;
@@ -227,7 +226,7 @@ void MenuApp::HandleInput(float timeStep) {
 
 	if (keyboard) {
 		int diff_int = static_cast <int> (data_->difficulty_);
-		if (keyboard->IsKeyPressed(keyboard->KC_LEFT)) {
+		if (keyboard->IsKeyPressed(keyboard->KC_LEFT) && timerao >= 8.0) {
 
 			//sound for difficult change
 			int id_sample_new = audio_manager_->PlaySample(id_change_difficult_, false);
@@ -241,7 +240,7 @@ void MenuApp::HandleInput(float timeStep) {
 				data_->difficulty_ = static_cast <GameData::Difficulty> (diff_int);
 			}
 		}
-		if (keyboard->IsKeyPressed(keyboard->KC_RIGHT)) {
+		if (keyboard->IsKeyPressed(keyboard->KC_RIGHT) && timerao >= 8.0) {
 
 			int id_sample_new = audio_manager_->PlaySample(id_change_difficult_, false);
 			audio_manager_->SetSampleVoiceVolumeInfo(id_sample_new, volume_difficult);
@@ -255,12 +254,15 @@ void MenuApp::HandleInput(float timeStep) {
 			}
 		}
 
-		if (keyboard->IsKeyPressed(keyboard->KC_Q)) {
+		if (keyboard->IsKeyPressed(keyboard->KC_Q) && timerao >= 8.0) {
 			exit(0);
 		}
-		if (keyboard->IsKeyPressed(keyboard->KC_P)) {
+		if (keyboard->IsKeyPressed(keyboard->KC_P) && timerao >= 8.0) {
 
 			exit_menu = true;
+		}
+		if (keyboard->IsKeyPressed(keyboard->KC_ESCAPE)) {
+			timerao = 8.0;
 		}
 	}
 }

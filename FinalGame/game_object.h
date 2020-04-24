@@ -5,6 +5,7 @@
 #include <box2d/Box2D.h>
 #include <iostream>
 #include <string>
+#include "maths/quaternion.h"
 
 using namespace std;
 
@@ -33,6 +34,9 @@ public:
 	gef::Vector4 scale = gef::Vector4(1, 1, 1, 1);
 
 	void DealDamage();
+
+	float rotation_x = 0.0;
+	float rotation_y = 0.0;
 
 	
 };
