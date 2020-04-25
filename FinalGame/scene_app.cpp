@@ -316,7 +316,7 @@ void SceneApp::Render()
 void SceneApp::InitPlayer()
 {
 	// setup the mesh for the player
-	player_.scale = gef::Vector4(0.01, 0.01, 0.01, 1);
+	player_.scale = gef::Vector4(0.03, 0.03, 0.03, 1);
 
 	player_.set_mesh(player_mesh_.mesh());
 
@@ -325,9 +325,9 @@ void SceneApp::InitPlayer()
 	player_body_def.type = b2_dynamicBody;
 	player_body_def.position = b2Vec2(0.0f, 4.0f);
 	//set up asset rotation
-	player_body_def.angle = 3.0;
-	player_.rotation_x = 0.0;
-	player_.rotation_y = 3.0;
+	player_body_def.angle = 0.0;
+	player_.rotation_x = -1;
+	player_.rotation_y = 0.0;
 	//fixed rotation
 	player_body_def.fixedRotation = true;
 
