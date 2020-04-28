@@ -191,7 +191,6 @@ namespace gef
 				}
 
 			}
-			gef::DebugOut("222222222");
 			file->Close();
 		}
 		return success;

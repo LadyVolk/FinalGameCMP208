@@ -1,0 +1,34 @@
+damage.wav:
+spookymodem
+https://opengameart.org/content/goblin-death
+no changes made
+
+change_difficult.wav:
+artisticdude
+https://opengameart.org/content/inventory-sound-effects
+no changes made
+
+cleric_path.wav:
+Tausdei
+https://opengameart.org/content/sacred-battle
+no changes made
+
+game_music.wav:
+Metaruka
+https://opengameart.org/content/game-game
+no changes made
+
+hit_enemy.wav
+bart
+https://opengameart.org/content/8-bit-platformer-sfx
+no chnages made
+
+death.wav
+congusbongus
+https://opengameart.org/content/aargh-male-screams
+no changes made
+
+start.wav
+artisticdude
+https://opengameart.org/content/battle-sound-effects
+no changes made
