@@ -318,7 +318,10 @@ void SceneApp::InitPlayer()
 	// setup the mesh for the player
 	player_.scale = gef::Vector4(0.03, 0.03, 0.03, 1);
 
+	player_.translation_offset->set_y(-0.5f);
+
 	player_.set_mesh(player_mesh_.mesh());
+	
 
 	// create a physics body for the player
 	b2BodyDef player_body_def;
@@ -337,7 +340,6 @@ void SceneApp::InitPlayer()
 	b2PolygonShape player_shape;
 	player_shape.SetAsBox(0.7f, 0.7f);
 	
-
 
 	// create the fixture
 	b2FixtureDef player_fixture_def;

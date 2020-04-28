@@ -38,6 +38,7 @@ public:
 	float rotation_x = 0.0;
 	float rotation_y = 0.0;
 
+	gef::Vector4* translation_offset = new gef::Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 	
 };
 

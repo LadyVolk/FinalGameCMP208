@@ -21,7 +21,8 @@ void GameObject::UpdateFromSimulation(const b2Body* body)
 		object_rotation.Rotation(quart);
 
 		// setup the object translation
-		gef::Vector4 object_translation(body->GetPosition().x, body->GetPosition().y, 0.0f);
+		gef::Vector4 object_translation(body->GetPosition().x + translation_offset->x(), 
+										body->GetPosition().y + translation_offset->y(), translation_offset->z());
 
 		// build object transformation matrix
 		gef::Matrix44 object_transform = object_rotation*object_scale;

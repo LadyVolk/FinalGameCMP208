@@ -109,6 +109,7 @@ private:
 	gef::Scene* player_model_;
 	gef::MeshInstance player_mesh_;
 	gef::Scene* scene_assets_;
+
 };
 
 #endif // _SCENE_APP_H
