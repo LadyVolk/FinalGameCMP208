@@ -110,6 +110,8 @@ private:
 	gef::MeshInstance player_mesh_;
 	gef::Scene* scene_assets_;
 
+	//exit stuff
+	bool exit_game_;
 };
 
 #endif // _SCENE_APP_H

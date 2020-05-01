@@ -120,6 +120,7 @@ void SceneApp::Init()
 	//create input object
 	input_ = gef::InputManager::Create(platform_);
 
+	exit_game_ = false;
 }
 
 void SceneApp::CleanUp()
@@ -255,6 +256,10 @@ bool SceneApp::Update(float frame_time)
 		world_->DestroyBody(player_body_);
 	}
 
+	//exit stuff
+	if (exit_game_) {
+		return false;
+	}
 
 	return true;
 }
@@ -606,10 +611,12 @@ void SceneApp::HandleInput(float timeStep) {
 			player_body_->ApplyForceToCenter(b2Vec2(player_.GetSpeed(), 0.0), true);
 		}
 		if (player_is_dead) {
-			if (keyboard->IsKeyDown(keyboard->KC_M)) {
+			if (keyboard->IsKeyDown(keyboard->KC_Q)) {
 				exit(0);
 			}
-			
+			if (keyboard->IsKeyDown(keyboard->KC_M)) {
+				exit_game_ = true;
+			}
 		}
 	}
 
