@@ -564,6 +564,10 @@ void SceneApp::DrawHUD()
 		font_->RenderText(sprite_renderer_, gef::Vector4(10.0f, 10.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "LIFES: %d", player_.GetHealth());
 		font_->RenderText(sprite_renderer_, gef::Vector4(400.0f, 10.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "SCORE: %.1f", score);
 		
+		if (player_is_dead) {
+			font_->RenderText(sprite_renderer_, gef::Vector4(350.0f, 200.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'M' to go to Menu");
+			font_->RenderText(sprite_renderer_, gef::Vector4(350.0f, 250.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Press 'Q' to quit");
+		}
 	}
 }
 
