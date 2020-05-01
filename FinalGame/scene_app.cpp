@@ -605,6 +605,12 @@ void SceneApp::HandleInput(float timeStep) {
 		if (keyboard->IsKeyDown(keyboard->KC_D)) {
 			player_body_->ApplyForceToCenter(b2Vec2(player_.GetSpeed(), 0.0), true);
 		}
+		if (player_is_dead) {
+			if (keyboard->IsKeyDown(keyboard->KC_M)) {
+				exit(0);
+			}
+			
+		}
 	}
 
 }
